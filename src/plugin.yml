@@ -1,0 +1,8 @@
+main: me.rockerjman222.Splegg.Splegg
+version: 0.1
+name: Splegg
+commands:
+  splegg:
+    description: Main Splegg Command
+    usage: /splegg <args>
+    aliases: [spl]
