@@ -1,6 +1,8 @@
 package me.rockerjman222.Splegg.command;
 
 import me.rockerjman222.Splegg.Splegg;
+import me.rockerjman222.Splegg.game.Game;
+import me.rockerjman222.Splegg.utils.SpleggFormatting;
 import me.rockerjman222.Splegg.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -10,7 +12,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CommandSplegg implements TabCompleter, CommandExecutor {
 
@@ -48,6 +52,23 @@ public class CommandSplegg implements TabCompleter, CommandExecutor {
             case "shop":
 
                 Utils.openShopGui(player.getUniqueId());
+                break;
+            case "start":
+
+                this.splegg.dataHolder.generateNormalGame(new Game(this.splegg.dataHolder.queuedPlayers, Utils.Config.DEFAULT_GAME_TIME));
+                break;
+
+            case "cancel":
+
+                player.sendMessage(Utils.getPrefix() + ChatColor.GOLD + "Canceled all games.");
+                this.splegg.dataHolder.cancelAllGames();
+                break;
+
+            case "join":
+
+                player.sendMessage(Utils.getPrefix() + ChatColor.GOLD + "You've joined the game queue!");
+                this.splegg.dataHolder.queuedPlayers.add(player.getUniqueId());
+                player.sendMessage(this.splegg.dataHolder.queuedPlayers.toString());
                 break;
 
         }

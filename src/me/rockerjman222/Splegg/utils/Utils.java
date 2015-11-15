@@ -61,6 +61,26 @@ public class Utils {
         return ChatColor.DARK_AQUA + "" + ChatColor.STRIKETHROUGH + "-----------------------------------------------------";
     }
 
+    public static int getMinutes(int time) {
+        if (time < 60)
+            return time;
+
+        return time / 60;
+    }
+
+    public static String shouldBeMinutes(int amount) {
+        if (amount > 60)
+            return "minutes";
+
+        if (amount == 60)
+            return "minute";
+
+        if (amount == 1)
+            return "second";
+
+        return "seconds";
+    }
+
     public static ItemStack getDiamondSplegg() {
         ItemStack diamondSplegg = new ItemStack(Material.DIAMOND_SPADE);
         ItemMeta diamondSpleggMeta = diamondSplegg.getItemMeta();
@@ -105,6 +125,7 @@ public class Utils {
     }
 
     public static class Config {
+        public static int DEFAULT_GAME_TIME = 300;
         public static int MAX_PLAYERS = 15;
         public static int MIN_PLAYERS = 2;
 
