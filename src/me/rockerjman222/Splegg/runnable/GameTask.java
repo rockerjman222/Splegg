@@ -1,19 +1,23 @@
 package me.rockerjman222.Splegg.runnable;
 
 import me.rockerjman222.Splegg.Splegg;
+import me.rockerjman222.Splegg.game.Arena;
 import me.rockerjman222.Splegg.game.Game;
 import me.rockerjman222.Splegg.utils.SpleggFormatting;
 import me.rockerjman222.Splegg.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GameTask extends BukkitRunnable {
 
     private Game game;
+    private Arena arena;
     private int timeRemaining = Utils.Config.DEFAULT_GAME_TIME;
     private final int initialTime;
 
-    public GameTask(Game game) {
+    public GameTask(Game game, Arena arena) {
         this.game = game;
+        this.arena = arena;
         this.timeRemaining = this.game.getGameTime();
         this.initialTime = this.timeRemaining;
     }
@@ -24,8 +28,9 @@ public class GameTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (this.initialTime == this.timeRemaining)
+        if (this.initialTime == this.timeRemaining) {
             Splegg.getInstance().dataHolder.sendSpleggMessage(SpleggFormatting.SpleggMessageType.SPLEGG_START, null, null, 0);
+        }
 
         switch (this.timeRemaining) {
             case 180:
@@ -57,9 +62,11 @@ public class GameTask extends BukkitRunnable {
                 break;
             case 1:
                 Splegg.getInstance().dataHolder.sendSpleggMessage(SpleggFormatting.SpleggMessageType.SPLEGG_TIME_LEFT, null, null, this.timeRemaining);
+                Bukkit.getPlayer("Rockerjman222").sendMessage(Splegg.getInstance().dataHolder.players.toString());
                 break;
             case 0:
                 this.game.endGameTask(this.game);
+                this.arena.rollbackArena(Splegg.getInstance(), "SpleggArena");
                 break;
         }
 

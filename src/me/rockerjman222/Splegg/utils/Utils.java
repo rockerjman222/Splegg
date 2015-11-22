@@ -33,7 +33,15 @@ public class Utils {
 
         Inventory i = Bukkit.createInventory(null, 9, ChatColor.GOLD + "Splegg Shop");
 
-        i.setItem(5, Utils.getDiamondSplegg());
+        ItemStack diamond = Utils.getDiamondSplegg();
+
+        ItemMeta diamondMeta = diamond.getItemMeta();
+
+        diamondMeta.getLore().add("shopItem");
+
+        diamond.setItemMeta(diamondMeta);
+
+        i.setItem(5, diamond);
         i.setItem(4, Utils.getGoldSplegg());
         i.setItem(3, Utils.getStoneSplegg());
 
@@ -125,7 +133,7 @@ public class Utils {
     }
 
     public static class Config {
-        public static int DEFAULT_GAME_TIME = 300;
+        public static int DEFAULT_GAME_TIME = 20; //300
         public static int MAX_PLAYERS = 15;
         public static int MIN_PLAYERS = 2;
 

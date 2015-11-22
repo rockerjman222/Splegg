@@ -16,7 +16,11 @@ public class Arena {
     public Arena(String name, World world) {
         this.name = name;
         this.world = world;
-        this.world.setAutoSave(false);//Can't have any of our worlds saving player changes
+        this.world.setAutoSave(false);
+    }
+
+    public Arena(World world) {
+        this(world.getName(), world);
     }
 
     public String getName() {

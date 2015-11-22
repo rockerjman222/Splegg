@@ -1,6 +1,7 @@
 package me.rockerjman222.Splegg.data;
 
 import me.rockerjman222.Splegg.Splegg;
+import me.rockerjman222.Splegg.game.Arena;
 import me.rockerjman222.Splegg.game.Game;
 import me.rockerjman222.Splegg.utils.SpleggFormatting;
 import me.rockerjman222.Splegg.utils.Utils;
@@ -20,6 +21,9 @@ public class DataHolder {
     public ArrayList<UUID> players = new ArrayList<>();
     public ArrayList<UUID> winningPlayers = new ArrayList<>();
     public ArrayList<UUID> queuedPlayers = new ArrayList<>();
+    public ArrayList<UUID> spectatingPlayers = new ArrayList<>();
+
+    //public Arena gameArena = new Arena("");
 
     public CopyOnWriteArrayList<Game> gameQueue = new CopyOnWriteArrayList<>();
 
@@ -31,7 +35,6 @@ public class DataHolder {
         for (Player p : this.splegg.getServer().getOnlinePlayers()) {
             switch (type) {
                 case SPLEGG_START:
-                    p.sendMessage("true");
                     p.spigot().sendMessage(SpleggFormatting.gameMessage(SpleggFormatting.SpleggMessageType.SPLEGG_START, null, null, 0));
                     break;
                 case SPLEGG_PLAYER_DEATH:
@@ -47,6 +50,7 @@ public class DataHolder {
     }
 
     public void generateNormalGame(Game game) {
+        this.players = this.queuedPlayers;
         this.gameQueue.add(game);
     }
 
@@ -64,11 +68,21 @@ public class DataHolder {
     }
 
     public void startNextGame() {
-        if (this.gameQueue.size() <= 2) {
+        if (this.gameQueue.size() >= 2) {
             for (Game game : this.gameQueue) {
                 game.startGameTask();
                 break;
             }
+        } else {
+            this.sendSpleggMessage(SpleggFormatting.SpleggMessageType.SPLEGG_DENY_START, null, null, 0);
         }
+    }
+
+    public Game getCurrentGame() {
+        for (Game game : this.gameQueue) {
+            if (game.isInProgress())
+                return game;
+        }
+        return null;
     }
 }
