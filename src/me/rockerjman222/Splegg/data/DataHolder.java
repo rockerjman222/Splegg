@@ -1,7 +1,6 @@
 package me.rockerjman222.Splegg.data;
 
 import me.rockerjman222.Splegg.Splegg;
-import me.rockerjman222.Splegg.game.Arena;
 import me.rockerjman222.Splegg.game.Game;
 import me.rockerjman222.Splegg.utils.SpleggFormatting;
 import me.rockerjman222.Splegg.utils.Utils;
@@ -11,6 +10,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -69,7 +69,9 @@ public class DataHolder {
 
     public void startNextGame() {
         if (this.gameQueue.size() >= 2) {
-            for (Game game : this.gameQueue) {
+            //I assume you meant to use a copy of the list, an iterator will suffice that
+            for (Iterator<Game> iterator = this.gameQueue.iterator(); iterator.hasNext(); ) {
+                Game game = iterator.next();
                 game.startGameTask();
                 break;
             }

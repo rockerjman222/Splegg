@@ -8,12 +8,55 @@ import org.bukkit.craftbukkit.libs.jline.internal.Log;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.Permission;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Utils {
+
+    private static ItemStack diamondSplegg;
+    private static ItemStack goldSplegg;
+    private static ItemStack stoneSplegg;
+
+
+    static {
+
+        diamondSplegg = new ItemStack(Material.DIAMOND_SPADE);
+        ItemMeta diamondSpleggMeta = diamondSplegg.getItemMeta();
+        ArrayList<String> lore = new ArrayList<>();
+
+        diamondSpleggMeta.setDisplayName(ChatColor.DARK_AQUA + "Diamond Splegg");
+        lore.add(ChatColor.DARK_PURPLE + "Costs 100 coins!");
+        lore.add(ChatColor.AQUA + "Shoots three snowballs!");
+
+        diamondSpleggMeta.setLore(lore);
+        diamondSplegg.setItemMeta(diamondSpleggMeta);
+
+
+        goldSplegg = new ItemStack(Material.GOLD_SPADE);
+        ItemMeta goldSpleggMeta = goldSplegg.getItemMeta();
+        lore.clear();
+
+        goldSpleggMeta.setDisplayName(ChatColor.GOLD + "Gold Splegg");
+        lore.add(ChatColor.DARK_PURPLE + "Costs 75 coins!");
+        lore.add(ChatColor.AQUA + "Shoots two snowballs!");
+
+        goldSpleggMeta.setLore(lore);
+        goldSplegg.setItemMeta(goldSpleggMeta);
+
+        stoneSplegg = new ItemStack(Material.STONE_SPADE);
+        ItemMeta stoneSpleggMeta = stoneSplegg.getItemMeta();
+        lore.clear();
+
+        stoneSpleggMeta.setDisplayName(ChatColor.GRAY + "Stone Splegg");
+        lore.add(ChatColor.DARK_PURPLE + "Costs 50 coins!");
+        lore.add(ChatColor.AQUA + "Shoots one snowball!");
+
+        stoneSpleggMeta.setLore(lore);
+        stoneSplegg.setItemMeta(stoneSpleggMeta);
+
+    }
 
     public static String getPrefix() {
         return ChatColor.DARK_AQUA + "[" + ChatColor.GOLD + "Splegg" + ChatColor.DARK_AQUA + "] ";
@@ -37,8 +80,11 @@ public class Utils {
 
         ItemMeta diamondMeta = diamond.getItemMeta();
 
-        diamondMeta.getLore().add("shopItem");
-
+        //this won't work
+        //diamondMeta.getLore().add("shopItem");
+        List<String> lore = diamondMeta.getLore();
+        lore.add("shopItem");
+        diamondMeta.setLore(lore);
         diamond.setItemMeta(diamondMeta);
 
         i.setItem(5, diamond);
@@ -90,44 +136,14 @@ public class Utils {
     }
 
     public static ItemStack getDiamondSplegg() {
-        ItemStack diamondSplegg = new ItemStack(Material.DIAMOND_SPADE);
-        ItemMeta diamondSpleggMeta = diamondSplegg.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-
-        diamondSpleggMeta.setDisplayName(ChatColor.DARK_AQUA + "Diamond Splegg");
-        lore.add(ChatColor.DARK_PURPLE + "Costs 100 coins!");
-        lore.add(ChatColor.AQUA + "Shoots three snowballs!");
-
-        diamondSpleggMeta.setLore(lore);
-        diamondSplegg.setItemMeta(diamondSpleggMeta);
 
         return diamondSplegg;
     }
     public static ItemStack getGoldSplegg() {
-        ItemStack goldSplegg = new ItemStack(Material.GOLD_SPADE);
-        ItemMeta goldSpleggMeta = goldSplegg.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-
-        goldSpleggMeta.setDisplayName(ChatColor.GOLD + "Gold Splegg");
-        lore.add(ChatColor.DARK_PURPLE + "Costs 75 coins!");
-        lore.add(ChatColor.AQUA + "Shoots two snowballs!");
-
-        goldSpleggMeta.setLore(lore);
-        goldSplegg.setItemMeta(goldSpleggMeta);
 
         return goldSplegg;
     }
     public static ItemStack getStoneSplegg() {
-        ItemStack stoneSplegg = new ItemStack(Material.STONE_SPADE);
-        ItemMeta stoneSpleggMeta = stoneSplegg.getItemMeta();
-        ArrayList<String> lore = new ArrayList<>();
-
-        stoneSpleggMeta.setDisplayName(ChatColor.GRAY + "Stone Splegg");
-        lore.add(ChatColor.DARK_PURPLE + "Costs 50 coins!");
-        lore.add(ChatColor.AQUA + "Shoots one snowball!");
-
-        stoneSpleggMeta.setLore(lore);
-        stoneSplegg.setItemMeta(stoneSpleggMeta);
 
         return stoneSplegg;
     }

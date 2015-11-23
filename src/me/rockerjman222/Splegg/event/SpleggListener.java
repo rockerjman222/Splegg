@@ -3,12 +3,15 @@ package me.rockerjman222.Splegg.event;
 import me.rockerjman222.Splegg.Splegg;
 import me.rockerjman222.Splegg.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -17,10 +20,18 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerEggThrowEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
+import org.bukkit.util.Vector;
 
 public class SpleggListener implements Listener {
 
@@ -67,6 +78,40 @@ public class SpleggListener implements Listener {
         event.setHatching(false);
     }
 
+	@EventHandler
+	public void onEggLaunch(ProjectileLaunchEvent event) {
+
+		if (event.getEntity() instanceof Snowball) {
+
+			Snowball s = ((Snowball) event.getEntity());
+			if (s.getShooter() instanceof Player) {
+
+				Player shooter = ((Player) s.getShooter());
+				Location spawnLocation = shooter.getEyeLocation().toVector()
+						.add(shooter.getLocation().getDirection().multiply(2)).
+								toLocation(shooter.getWorld(), shooter.getLocation().getYaw(), shooter.getLocation().getPitch());
+
+				if (shooter.getItemInHand() != null) {
+
+					ItemStack hand = shooter.getItemInHand();
+
+
+					if (hand.isSimilar(Utils.getDiamondSplegg())) {
+
+						this.spawnExtraSnowballs(s.getVelocity(), s.getWorld(), spawnLocation, shooter, 2);
+
+					}
+
+					//The same can be done for gold or otherwise
+
+				}
+
+			}
+
+		}
+
+	}
+
     /*
      *
      * Player tasks
@@ -104,26 +149,26 @@ public class SpleggListener implements Listener {
     public void onPlayerRightClickEvent(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack hand = player.getItemInHand();
-        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            //TODO: Upgrades
-            if (hand.getType() == Material.DIAMOND_SPADE) {
-                if (ChatColor.stripColor(hand.getItemMeta().getDisplayName()).equalsIgnoreCase("diamond splegg")) {
-                    player.launchProjectile(Egg.class);
-                    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1.0F, 1.0F);
-                }
+	    if (event.hasItem() && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+		    //TODO: Upgrades
+		    //TODO: Drew did them above
+		    //You can't call getDisplayName without checking if hasDisplayName, can cause NPE
+		    if (hand.isSimilar(Utils.getDiamondSplegg())) {
+
+			    //This should cause a projectilelaunch event, if it doesn't, we can call it manually
+			    player.launchProjectile(Egg.class);
+			    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1.0F, 1.0F);
+
             }
-            if (hand.getType() == Material.GOLD_SPADE) {
-                if (ChatColor.stripColor(hand.getItemMeta().getDisplayName()).equalsIgnoreCase("gold splegg")) {
-                    player.launchProjectile(Egg.class);
-                    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1.0F, 1.0F);
-                }
-            }
-            if (hand.getType() == Material.STONE_SPADE) {
-                if (ChatColor.stripColor(hand.getItemMeta().getDisplayName()).equalsIgnoreCase("stone splegg")) {
-                    player.launchProjectile(Egg.class);
-                    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1.0F, 1.0F);
-                }
-            }
+		    if (hand.isSimilar(Utils.getGoldSplegg())) {
+			    player.launchProjectile(Egg.class);
+			    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1.0F, 1.0F);
+		    }
+		    if (hand.isSimilar(Utils.getStoneSplegg())) {
+
+			    player.launchProjectile(Egg.class);
+			    player.playSound(player.getLocation(), Sound.CHICKEN_EGG_POP, 1.0F, 1.0F);
+		    }
         }
     }
 
@@ -230,5 +275,22 @@ public class SpleggListener implements Listener {
         if (!event.getPlayer().hasPermission("splegg.worldInteract") || !event.getPlayer().isOp())
             event.setCancelled(true);
     }
+
+	public void spawnExtraSnowballs(Vector velocity, World world, Location original, Player shooter, int snowballs) {
+
+		for (int i = 0; i <= snowballs; i++) {
+
+			Snowball snowball = world.spawn(original, Snowball.class);
+
+			snowball.setShooter(shooter);
+			snowball.setBounce(false);
+
+			snowball.setVelocity(velocity.add(new Vector(Splegg.RANDOM.nextDouble() - 0.5,
+					Splegg.RANDOM.nextDouble() - 0.5,
+					Splegg.RANDOM.nextDouble() - 0.5)));
+
+		}
+
+	}
 
 }
