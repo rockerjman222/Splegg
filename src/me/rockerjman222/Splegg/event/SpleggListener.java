@@ -87,7 +87,11 @@ public class SpleggListener implements Listener {
 			if (s.getShooter() instanceof Player) {
 
 				Player shooter = ((Player) s.getShooter());
-				Location spawnLocation = shooter.getEyeLocation().toVector()
+
+				if(!this.splegg.dataHolder.players.contains(shooter.getUniqueId()))
+					return;
+
+					Location spawnLocation = shooter.getEyeLocation().toVector()
 						.add(shooter.getLocation().getDirection().multiply(2)).
 								toLocation(shooter.getWorld(), shooter.getLocation().getYaw(), shooter.getLocation().getPitch());
 
@@ -99,6 +103,12 @@ public class SpleggListener implements Listener {
 					if (hand.isSimilar(Utils.getDiamondSplegg())) {
 
 						this.spawnExtraSnowballs(s.getVelocity(), s.getWorld(), spawnLocation, shooter, 2);
+
+					}
+
+					if (hand.isSimilar(Utils.getGoldSplegg())) {
+
+						this.spawnExtraSnowballs(s.getVelocity(), s.getWorld(), spawnLocation, shooter, 1);
 
 					}
 

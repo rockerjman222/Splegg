@@ -7,11 +7,23 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class CommandSplegg implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CommandSplegg implements CommandExecutor, TabCompleter {
 
     private final Splegg splegg;
+
+    private final String[] tabCompletes = {
+		    "help",
+		    "shop",
+		    "join",
+		    "leave",
+		    "spectate"
+    };
 
     private final String[] usages = {
             Utils.getHeader("Splegg Help"),
@@ -84,6 +96,11 @@ public class CommandSplegg implements CommandExecutor {
 
             case "cancel":
 
+	            if(!player.hasPermission("splegg.admin")){
+
+		            player.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+		            return true;
+	            }
                 player.sendMessage(Utils.getPrefix() + ChatColor.GOLD + "Canceled all games.");
                 this.splegg.dataHolder.cancelAllGames();
                 break;
@@ -95,4 +112,33 @@ public class CommandSplegg implements CommandExecutor {
 
         return true;
     }
+
+	@Override
+	public List<String> onTabComplete(CommandSender commandSender, Command command, String alias, String[] args) {
+
+		List<String> stringSet = new ArrayList<>();
+
+		if(commandSender instanceof Player){
+
+			Player player = ((Player) commandSender);
+
+			if(args.length == 1){
+
+				String search = args[0];
+
+				for(String s : tabCompletes){
+
+					if(s.startsWith(search.toLowerCase()))
+						stringSet.add(s);
+				}
+
+			}
+
+			return stringSet;
+
+		}else{
+
+			return new ArrayList<>();
+		}
+	}
 }

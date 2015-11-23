@@ -5,9 +5,6 @@ import me.rockerjman222.Splegg.Splegg;
 import me.rockerjman222.Splegg.runnable.GameTask;
 import me.rockerjman222.Splegg.utils.SpleggFormatting;
 import me.rockerjman222.Splegg.utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -19,6 +16,7 @@ public class Game {
 
     private Arena arena;
 
+	//This has essentially no value, is it planned to be used?
     private ArrayList<UUID> players = Splegg.getInstance().dataHolder.players;
 
     private boolean inProgress = false;
@@ -43,6 +41,7 @@ public class Game {
         Splegg.getInstance().dataHolder.sendSpleggMessage(SpleggFormatting.SpleggMessageType.SPLEGG_PLAYER_WIN, Splegg.getInstance().dataHolder.winningPlayers, null, 0);
         Splegg.getInstance().dataHolder.players.clear();
         Splegg.getInstance().dataHolder.gameQueue.remove(game);
+        //TODO Return players from whence they came
     }
 
     public int getGameTime() {
