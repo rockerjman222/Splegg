@@ -1,23 +1,15 @@
 package me.rockerjman222.Splegg.command;
 
 import me.rockerjman222.Splegg.Splegg;
-import me.rockerjman222.Splegg.game.Arena;
 import me.rockerjman222.Splegg.game.Game;
-import me.rockerjman222.Splegg.utils.SpleggFormatting;
 import me.rockerjman222.Splegg.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-public class CommandSplegg implements TabCompleter, CommandExecutor {
+public class CommandSplegg implements CommandExecutor {
 
     private final Splegg splegg;
 
@@ -95,14 +87,12 @@ public class CommandSplegg implements TabCompleter, CommandExecutor {
                 player.sendMessage(Utils.getPrefix() + ChatColor.GOLD + "Canceled all games.");
                 this.splegg.dataHolder.cancelAllGames();
                 break;
+            default:
+                player.sendMessage(usages);
+                break;
 
         }
 
         return true;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-        return null;
     }
 }

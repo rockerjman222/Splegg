@@ -5,14 +5,15 @@ import me.rockerjman222.Splegg.data.DataHolder;
 import me.rockerjman222.Splegg.event.SpleggListener;
 import me.rockerjman222.Splegg.game.Arena;
 import org.bukkit.WorldCreator;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Random;
 
 public class Splegg extends JavaPlugin {
 
     public final DataHolder dataHolder = new DataHolder(this);
-    public Arena arena = null;
+	public static Random RANDOM = new Random();
+	public Arena arena = null;
 
     public void onEnable() {
         if (this.getServer().getWorld("SpleggArena") == null)
@@ -35,10 +36,6 @@ public class Splegg extends JavaPlugin {
 
     public void onDisable() {
 
-    }
-
-    public boolean onCommand(CommandSender sender, Command cmd, String alias, String[] args) {
-        return true;
     }
 
     public static Splegg getInstance() {

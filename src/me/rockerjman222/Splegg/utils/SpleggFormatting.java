@@ -44,7 +44,7 @@ public class SpleggFormatting {
                         .append(hasOrHave + " won the match!").color(ChatColor.GOLD).create());
                 break;
             case SPLEGG_TIME_LEFT:
-                message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append("There is only ").color(ChatColor.DARK_AQUA)
+                message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append("There " + (timeRemaining == 1 ? "is" : "are") + " only ").color(ChatColor.DARK_AQUA)
                         .append(Utils.getMinutes(timeRemaining) + " " + Utils.shouldBeMinutes(timeRemaining)).color(ChatColor.GOLD)
                         .append(" left!").color(ChatColor.DARK_AQUA).create());
                 break;
