@@ -1,5 +1,6 @@
 package me.rockerjman222.Splegg.command;
 
+import com.google.common.collect.ImmutableList;
 import me.rockerjman222.Splegg.Splegg;
 import me.rockerjman222.Splegg.game.Game;
 import me.rockerjman222.Splegg.utils.Utils;
@@ -116,29 +117,23 @@ public class CommandSplegg implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender commandSender, Command command, String alias, String[] args) {
 
-		List<String> stringSet = new ArrayList<>();
+		if (commandSender instanceof Player && args.length == 1) {
 
-		if(commandSender instanceof Player){
+			String search = args[0].toLowerCase();
 
-			Player player = ((Player) commandSender);
+			List<String> stringSet = new ArrayList<>();
 
-			if(args.length == 1){
+			for (String s : tabCompletes) {
 
-				String search = args[0];
-
-				for(String s : tabCompletes){
-
-					if(s.startsWith(search.toLowerCase()))
-						stringSet.add(s);
-				}
-
+				if (s.startsWith(search))
+					stringSet.add(s);
 			}
 
 			return stringSet;
 
 		}else{
 
-			return new ArrayList<>();
+			return ImmutableList.of();
 		}
 	}
 }

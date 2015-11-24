@@ -57,8 +57,8 @@ public class DataHolder {
     public void cancelAllGames() {
         for (Game game : this.gameQueue) {
             for (UUID player : this.queuedPlayers) {
-                OfflinePlayer target = Bukkit.getOfflinePlayer(player);
-                if (target.isOnline()) {
+              	Player target = Bukkit.getPlayer(player);
+                if (player != null) {
                     target.getPlayer().sendMessage(Utils.getPrefix() + ChatColor.RED + "Your game was canceled!");
                 }
             }
@@ -70,11 +70,15 @@ public class DataHolder {
     public void startNextGame() {
         if (this.gameQueue.size() >= 2) {
             //I assume you meant to use a copy of the list, an iterator will suffice that
-            for (Iterator<Game> iterator = this.gameQueue.iterator(); iterator.hasNext(); ) {
+
+			this.gameQueue.get(0).startGameTask();
+
+            /*for (Iterator<Game> iterator = this.gameQueue.iterator(); iterator.hasNext(); ) {
                 Game game = iterator.next();
                 game.startGameTask();
                 break;
-            }
+            }*/
+
         } else {
             this.sendSpleggMessage(SpleggFormatting.SpleggMessageType.SPLEGG_DENY_START, null, null, 0);
         }

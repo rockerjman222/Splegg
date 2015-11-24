@@ -22,26 +22,51 @@ public class SpleggFormatting {
                 message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append("There is not enough players to start a match!").create());
                 break;
             case SPLEGG_PLAYER_DEATH:
-                message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append(Bukkit.getOfflinePlayer(eliminated).getName()).color(ChatColor.DARK_AQUA)
+
+				String username;
+
+				Player player = Bukkit.getPlayer(eliminated);
+
+				if(player != null){
+					username = player.getName();
+				}else{
+					username = Bukkit.getOfflinePlayer(eliminated).getName();
+				}
+
+                message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append(username).color(ChatColor.DARK_AQUA)
                         .append(" has been eliminated!").color(ChatColor.GOLD).create());
                 break;
             case SPLEGG_PLAYER_WIN:
-                ArrayList<Player> players = new ArrayList<>();
-                for (int i = 0; i < winners.size(); i++) {
-                    Player player = Bukkit.getPlayer(winners.get(i));
-                    players.add(player);
-                }
 
-                String hasOrHave;
+                StringBuilder playerNames = new StringBuilder();
 
-                if (players.size() <= 1) {
-                    hasOrHave = " has";
-                } else {
+				String hasOrHave;
+
+				if (winners.size() > 1) {
+
+					for (int i = 0; i < (winners.size() - 1); i++) {
+						player = Bukkit.getPlayer(winners.get(i));
+						if(player != null) {
+							playerNames.append(player.getName()).append(',').append(' ');
+						}
+					}
+
+					player = Bukkit.getPlayer(winners.get(winners.size() - 1));
+
+					playerNames.append("and").append(' ').append(player.getName());
+
                     hasOrHave = " have";
+                } else {
+
+					playerNames.append(Bukkit.getPlayer(winners.get(winners.size() - 1)).getName());
+
+                    hasOrHave = " has";
+
                 }
 
-                message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append(players.toString().replace("[", "").replace("]", "").replace(",", " and").replace("CraftPlayer{name=", "").replace("}", "")).color(ChatColor.DARK_AQUA)
+                message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append(playerNames.toString()).color(ChatColor.DARK_AQUA)
                         .append(hasOrHave + " won the match!").color(ChatColor.GOLD).create());
+
                 break;
             case SPLEGG_TIME_LEFT:
                 message = new TextComponent(new ComponentBuilder(Utils.getPrefix()).append("There " + (timeRemaining == 1 ? "is" : "are") + " only ").color(ChatColor.DARK_AQUA)
