@@ -1,10 +1,11 @@
 package me.rockerjman222.Splegg.utils;
 
+import me.rockerjman222.Splegg.Splegg;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.craftbukkit.libs.jline.internal.Log;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -67,10 +68,10 @@ public class Utils {
     }
 
     public static void openShopGui(UUID playerUUID) {
-        OfflinePlayer player = Bukkit.getOfflinePlayer(playerUUID);
+		Player player = Bukkit.getPlayer(playerUUID);
 
-        if(!player.isOnline()) {
-            Log.info("Tried to open shop inventory to offline player: " + player.getName());
+        if(player == null) {
+            Splegg.getInstance().getLogger().info("Tried to open shop inventory for offline player: " + playerUUID.toString());
             return;
         }
 

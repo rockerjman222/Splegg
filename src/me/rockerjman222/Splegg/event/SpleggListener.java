@@ -145,13 +145,13 @@ public class SpleggListener implements Listener {
 
     @EventHandler
     public void onEntityDropItemEvent(PlayerDropItemEvent event) {
-        if (!event.getPlayer().hasPermission("splegg.worldInteract") || !event.getPlayer().isOp())
+        if (!event.getPlayer().hasPermission("splegg.worldInteract") && !event.getPlayer().isOp())
             event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerPickupItemEvent(PlayerPickupItemEvent event) {
-        if (!event.getPlayer().hasPermission("splegg.worldInteract") || !event.getPlayer().isOp())
+        if (!event.getPlayer().hasPermission("splegg.worldInteract") && !event.getPlayer().isOp())
             event.setCancelled(true);
     }
 
@@ -187,7 +187,7 @@ public class SpleggListener implements Listener {
         Player player = event.getPlayer();
         //TODO: set to specator
         //TODO: check for in game
-        if (player.getLocation().getY() < -5.0D) {
+        if (event.getTo().getY() < -5.0D) {
             player.getServer().broadcastMessage(Utils.getPrefix() + ChatColor.GOLD + player.getName() + " has fallen out of the match!");
             player.setFlying(true);
         }
@@ -276,13 +276,13 @@ public class SpleggListener implements Listener {
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (!event.getPlayer().hasPermission("splegg.worldInteract") || !event.getPlayer().isOp())
+        if (!event.getPlayer().hasPermission("splegg.worldInteract") && !event.getPlayer().isOp())
             event.setCancelled(true);
     }
 
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
-        if (!event.getPlayer().hasPermission("splegg.worldInteract") || !event.getPlayer().isOp())
+        if (!event.getPlayer().hasPermission("splegg.worldInteract") && !event.getPlayer().isOp())
             event.setCancelled(true);
     }
 
